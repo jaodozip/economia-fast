@@ -2,7 +2,7 @@ import { ChangeEvent, useMemo, useRef, useState } from "react";
 
 type Transaction = {
   id: string;
-  type: "Entrada" | "Saída";
+  type: "Entrada" | "Sa\u00edda";
   category: string;
   amount: number;
   date: string;
@@ -26,16 +26,16 @@ type Bill = {
 const STORAGE_KEY = "economiafast:v2";
 
 const defaultTransactions: Transaction[] = [
-  { id: "t1", type: "Saída", category: "Alimentação", amount: 82.5, date: "2026-04-01" },
-  { id: "t2", type: "Entrada", category: "Salário", amount: 4200, date: "2026-04-01" },
-  { id: "t3", type: "Saída", category: "Transporte", amount: 45.2, date: "2026-04-02" },
-  { id: "t4", type: "Saída", category: "Moradia", amount: 1200, date: "2026-04-02" },
-  { id: "t5", type: "Saída", category: "Lazer", amount: 160, date: "2026-04-03" },
+  { id: "t1", type: "Sa\u00edda", category: "Alimenta\u00e7\u00e3o", amount: 82.5, date: "2026-04-01" },
+  { id: "t2", type: "Entrada", category: "Sal\u00e1rio", amount: 4200, date: "2026-04-01" },
+  { id: "t3", type: "Sa\u00edda", category: "Transporte", amount: 45.2, date: "2026-04-02" },
+  { id: "t4", type: "Sa\u00edda", category: "Moradia", amount: 1200, date: "2026-04-02" },
+  { id: "t5", type: "Sa\u00edda", category: "Lazer", amount: 160, date: "2026-04-03" },
   { id: "t6", type: "Entrada", category: "Freelance", amount: 620, date: "2026-04-03" },
 ];
 
 const defaultGoals: Goal[] = [
-  { id: "g1", name: "Reserva de emergência", target: 6000, saved: 4320 },
+  { id: "g1", name: "Reserva de emerg\u00eancia", target: 6000, saved: 4320 },
   { id: "g2", name: "Viagem", target: 2500, saved: 950 },
   { id: "g3", name: "Curso", target: 1800, saved: 720 },
 ];
@@ -43,7 +43,7 @@ const defaultGoals: Goal[] = [
 const defaultBills: Bill[] = [
   { id: "b1", name: "Internet", amount: 120, dueDate: "2026-04-08", paid: false },
   { id: "b2", name: "Energia", amount: 210.45, dueDate: "2026-04-12", paid: false },
-  { id: "b3", name: "Cartão de crédito", amount: 980.3, dueDate: "2026-04-15", paid: false },
+  { id: "b3", name: "Cart\u00e3o de cr\u00e9dito", amount: 980.3, dueDate: "2026-04-15", paid: false },
 ];
 
 const loadState = () => {
@@ -90,12 +90,12 @@ const App = () => {
   const [bills, setBills] = useState<Bill[]>(initial.bills);
   const [balanceBase, setBalanceBase] = useState<number>(initial.balanceBase);
 
-  const [form, setForm] = useState({ type: "Saída", category: "", amount: "", date: "" });
+  const [form, setForm] = useState({ type: "Sa\u00edda", category: "", amount: "", date: "" });
   const [goalForm, setGoalForm] = useState({ name: "", target: "", saved: "" });
   const [billForm, setBillForm] = useState({ name: "", amount: "", dueDate: "" });
 
   const [editingTxId, setEditingTxId] = useState<string | null>(null);
-  const [editingTx, setEditingTx] = useState({ type: "Saída", category: "", amount: "", date: "" });
+  const [editingTx, setEditingTx] = useState({ type: "Sa\u00edda", category: "", amount: "", date: "" });
 
   const [editingGoalId, setEditingGoalId] = useState<string | null>(null);
   const [editingGoal, setEditingGoal] = useState({ name: "", target: "", saved: "" });
@@ -112,7 +112,7 @@ const App = () => {
 
   const summary = useMemo(() => {
     const totalIn = transactions.filter((t) => t.type === "Entrada").reduce((acc, t) => acc + t.amount, 0);
-    const totalOut = transactions.filter((t) => t.type === "Saída").reduce((acc, t) => acc + t.amount, 0);
+    const totalOut = transactions.filter((t) => t.type === "Sa\u00edda").reduce((acc, t) => acc + t.amount, 0);
     const balance = balanceBase + totalIn - totalOut - paidBillsTotal;
     return {
       totalIn,
@@ -125,7 +125,7 @@ const App = () => {
   const categories = useMemo(() => {
     const map = new Map<string, number>();
     transactions
-      .filter((t) => t.type === "Saída")
+      .filter((t) => t.type === "Sa\u00edda")
       .forEach((t) => map.set(t.category, (map.get(t.category) || 0) + t.amount));
     return Array.from(map.entries())
       .map(([label, value]) => ({ label, value }))
@@ -212,7 +212,7 @@ const App = () => {
     ];
     setTransactions(next);
     persist({ transactions: next });
-    setForm({ type: "Saída", category: "", amount: "", date: "" });
+    setForm({ type: "Sa\u00edda", category: "", amount: "", date: "" });
   };
 
   const handleDeleteTransaction = (id: string) => {
@@ -367,21 +367,21 @@ const App = () => {
             <div className="header-date">Atualizado em 06 de abril de 2026</div>
             <button className="secondary-button" onClick={handleExportData}>Exportar dados</button>
             <button className="secondary-button" onClick={() => fileInputRef.current?.click()}>Importar dados</button>
-            <button className="primary-button">Novo lançamento</button>
+            <button className="primary-button">Novo lan\u00e7amento</button>
           </div>
         </header>
 
         <main className="mx-auto w-full max-w-6xl px-6 pb-16">
           <section className="summary-grid">
             <div className="stat-card">
-              <div className="text-sm text-ink-soft">Entradas do mês</div>
+              <div className="text-sm text-ink-soft">Entradas do m\u00eas</div>
               <div className="text-2xl font-semibold">R$ {summary.totalIn.toFixed(2)}</div>
               <div className="tag tag-green">Receitas em dia</div>
             </div>
             <div className="stat-card">
-              <div className="text-sm text-ink-soft">Saídas do mês</div>
+              <div className="text-sm text-ink-soft">Sa\u00eddas do m\u00eas</div>
               <div className="text-2xl font-semibold">R$ {summary.totalOut.toFixed(2)}</div>
-              <div className="tag tag-amber">Atenção às variáveis</div>
+              <div className="tag tag-amber">Aten\u00e7\u00e3o \u00e0s vari\u00e1veis</div>
             </div>
             <div className="stat-card">
               <div className="text-sm text-ink-soft">Saldo atual</div>
@@ -391,28 +391,28 @@ const App = () => {
             <div className="stat-card">
               <div className="text-sm text-ink-soft">Metas ativas</div>
               <div className="text-2xl font-semibold">{goals.length}</div>
-              <div className="tag tag-green">Progresso contínuo</div>
+              <div className="tag tag-green">Progresso cont\u00ednuo</div>
             </div>
           </section>
 
           <section className="dashboard-grid">
             <div className="column">
               <div className="panel-card">
-                <div className="panel-title">Movimentações recentes</div>
+                <div className="panel-title">Movimenta\u00e7\u00f5es recentes</div>
                 <div className="table">
                   <div className="table-row table-head">
                     <span>Tipo</span>
                     <span>Categoria</span>
                     <span>Data</span>
                     <span className="text-right">Valor</span>
-                    <span className="text-right">Ações</span>
+                    <span className="text-right">A\u00e7\u00f5es</span>
                   </div>
                   {transactions.map((t) => (
                     <div key={t.id} className="table-row">
                       <span>{editingTxId === t.id ? (
                         <select value={editingTx.type} onChange={(e) => setEditingTx({ ...editingTx, type: e.target.value })}>
                           <option>Entrada</option>
-                          <option>Saída</option>
+                          <option>Sa\u00edda</option>
                         </select>
                       ) : t.type}</span>
                       <span>{editingTxId === t.id ? (
@@ -524,7 +524,7 @@ const App = () => {
 
             <div className="column">
               <div className="panel-card">
-                <div className="panel-title">Saldo base do mês</div>
+                <div className="panel-title">Saldo base do m\u00eas</div>
                 <div className="balance-row">
                   <label className="form-field">
                     Saldo atual inicial
@@ -536,19 +536,19 @@ const App = () => {
                     />
                   </label>
                   <div className="balance-hint">
-                    Marque as contas como pagas para abatê-las do saldo automaticamente.
+                    Marque as contas como pagas para abat\u00ea-las do saldo automaticamente.
                   </div>
                 </div>
               </div>
 
               <div className="panel-card">
-                <div className="panel-title">Adicionar movimentação</div>
+                <div className="panel-title">Adicionar movimenta\u00e7\u00e3o</div>
                 <div className="form-grid">
                   <label className="form-field">
                     Tipo
                     <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
                       <option>Entrada</option>
-                      <option>Saída</option>
+                      <option>Sa\u00edda</option>
                     </select>
                   </label>
                   <label className="form-field">
@@ -556,7 +556,7 @@ const App = () => {
                     <input
                       value={form.category}
                       onChange={(e) => setForm({ ...form, category: e.target.value })}
-                      placeholder="Ex: Alimentação"
+                      placeholder="Ex: Alimenta\u00e7\u00e3o"
                     />
                   </label>
                   <label className="form-field">
@@ -628,7 +628,7 @@ const App = () => {
                     />
                   </label>
                   <label className="form-field">
-                    Já guardado
+                    J\u00e1 guardado
                     <input
                       value={goalForm.saved}
                       onChange={(e) => setGoalForm({ ...goalForm, saved: e.target.value })}
@@ -644,7 +644,7 @@ const App = () => {
 
           <section className="charts-grid">
             <div className="panel-card">
-              <div className="panel-title">Fluxo de caixa (últimos 6 meses)</div>
+              <div className="panel-title">Fluxo de caixa (\u00faltimos 6 meses)</div>
               <div className="bar-chart">
                 {cashflow.map((item) => (
                   <div key={item.month} className="bar-item">
@@ -655,7 +655,7 @@ const App = () => {
               </div>
             </div>
             <div className="panel-card">
-              <div className="panel-title">Distribuição de gastos</div>
+              <div className="panel-title">Distribui\u00e7\u00e3o de gastos</div>
               <div className="donut-row">
                 <div
                   className="donut"
@@ -665,14 +665,14 @@ const App = () => {
                 />
                 <div className="donut-legend">
                   <div><span className="legend-dot dot-green" />Moradia</div>
-                  <div><span className="legend-dot dot-mint" />Alimentação</div>
+                  <div><span className="legend-dot dot-mint" />Alimenta\u00e7\u00e3o</div>
                   <div><span className="legend-dot dot-ink" />Transporte</div>
                   <div><span className="legend-dot dot-gray" />Outros</div>
                 </div>
               </div>
             </div>
             <div className="panel-card">
-              <div className="panel-title">Tendência de saldo</div>
+              <div className="panel-title">Tend\u00eancia de saldo</div>
               <svg className="trend" viewBox="0 0 220 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <polyline
                   points={trendPoints.map((v, i) => `${i * 36},${90 - v * 2}`).join(" ")}
@@ -683,7 +683,7 @@ const App = () => {
                   fill="none"
                 />
               </svg>
-              <div className="trend-label">Saldo crescendo nas últimas semanas</div>
+              <div className="trend-label">Saldo crescendo nas \u00faltimas semanas</div>
             </div>
           </section>
         </main>
